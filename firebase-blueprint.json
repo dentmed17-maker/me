@@ -1,0 +1,76 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the app, either a patient or an admin (secretary/dentist).",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Appointment": {
+      "title": "Appointment",
+      "description": "A meeting request from a user to the dentist.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "denied"] },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "userName", "date", "status", "createdAt"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "A text message between a user and the admin.",
+      "type": "object",
+      "properties": {
+        "senderId": { "type": "string" },
+        "receiverId": { "type": "string" },
+        "text": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "read": { "type": "boolean" }
+      },
+      "required": ["senderId", "receiverId", "text", "timestamp", "read"]
+    },
+    "Showcase": {
+      "title": "Showcase",
+      "description": "A service or gallery item added by the admin.",
+      "type": "object",
+      "properties": {
+        "titleAr": { "type": "string" },
+        "titleFr": { "type": "string" },
+        "descAr": { "type": "string" },
+        "descFr": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["titleAr", "titleFr", "descAr", "descFr", "imageUrl", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Stores user profiles and roles."
+    },
+    "/appointments/{appointmentId}": {
+      "schema": { "$ref": "#/entities/Appointment" },
+      "description": "Stores meeting requests."
+    },
+    "/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/Message" },
+      "description": "Stores text messages."
+    },
+    "/showcases/{showcaseId}": {
+      "schema": { "$ref": "#/entities/Showcase" },
+      "description": "Stores showcase items."
+    }
+  }
+}
